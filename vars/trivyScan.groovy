@@ -1,14 +1,3 @@
-#!/usr/bin/env groovy
-
-/**
- * Run Trivy security scan on Docker image
- *
- * @param imageName The name of the Docker image
- * @param imageTag The tag for the Docker image
- * @param threshold The maximum number of vulnerabilities allowed
- * @param severity The severity levels to check for
- * @param installTrivy Whether to attempt installing Trivy if not found
- */
 def call(Map config = [:]) {
     def imageName = config.imageName ?: error("Image name is required")
     def imageTag = config.imageTag ?: 'latest'
