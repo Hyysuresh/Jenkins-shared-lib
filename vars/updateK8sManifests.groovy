@@ -47,7 +47,7 @@ def call(Map config = [:]) {
                 echo "No changes to commit"
             else
                 # Commit and push changes
-                git add ${manifestsPath}/*.yaml
+                git add .
                 git commit -m "Update image tags to ${imageTag} and ensure correct domain [ci skip]"
                 
                 # Set up credentials for push
