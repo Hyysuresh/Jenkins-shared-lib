@@ -29,13 +29,17 @@ def call(Map config = [:]) {
             sed -i "s|image: hyysuresh/food-delivery-frontend:.*|image: hyysuresh/food-delivery-frontend:${imageTag}|g" ${manifestsPath}/02frontend-deployment.yml
             
             # Update backend application deployment - note the correct image name is hyysuresh/food-delivery-backend
-            if [ -f "${manifestsPath}/12-migration-job.yaml" ]; then
-                sed -i "s|image: iemafzal/easyshop-migration:.*|image: iemafzal/easyshop-migration:${imageTag}|g" ${manifestsPath}/12-migration-job.yaml
+            if [ -f "${manifestsPath}/03backend-deployment.yml" ]; then
+                sed -i "s|image: hyysuresh/food-delivery-backend:.*|image: hyysuresh/food-delivery-backend:${imageTag}|g" ${manifestsPath}/03backend-deployment.yml
             fi
-            
+
+            # Update admin application deployment - note the correct image name is hyysuresh/food-delivery-backend
+            if [ -f "${manifestsPath}/04admin-deployment.yml" ]; then
+                sed -i "s|image: hyysuresh/food-delivery-admin:.*|image: hyysuresh/food-delivery-admin:${imageTag}|g" ${manifestsPath}/04admin-deployment.yml
+            fi
             # Ensure ingress is using the correct domain
             if [ -f "${manifestsPath}/10-ingress.yaml" ]; then
-                sed -i "s|host: .*|host: easyshop.letsdeployit.com|g" ${manifestsPath}/10-ingress.yaml
+                sed -i "s|host: .*|host: jaatnikafood.food|g" ${manifestsPath}/ingress.yaml
             fi
             
             # Check for changes
@@ -47,7 +51,7 @@ def call(Map config = [:]) {
                 git commit -m "Update image tags to ${imageTag} and ensure correct domain [ci skip]"
                 
                 # Set up credentials for push
-                git remote set-url origin https://\${GIT_USERNAME}:\${GIT_PASSWORD}@github.com/Hyysuresh/food-delivery.git
+                git remote set-url origin https://\${GIT_USERNAME}:\${GIT_PASSWORD}@github.com/Hyysuresh/full-stack-food-delivery.git
                 git push origin HEAD:\${GIT_BRANCH}
             fi
         """
